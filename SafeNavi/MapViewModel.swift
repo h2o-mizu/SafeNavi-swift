@@ -80,7 +80,7 @@ class MapViewModel: NSObject, ObservableObject, CLLocationManagerDelegate, MKLoc
         directionRequest.source = MKMapItem(placemark: self.startPoint!)
         directionRequest.destination = MKMapItem(placemark: self.endPoint!)
         directionRequest.transportType = MKDirectionsTransportType.walking
-        directionRequest.requestsAlternateRoutes = false
+        directionRequest.requestsAlternateRoutes = true
         
         let directions = MKDirections(request: directionRequest)
         directions.calculate { (response, error) in
@@ -88,11 +88,11 @@ class MapViewModel: NSObject, ObservableObject, CLLocationManagerDelegate, MKLoc
                 print("MKLocalSearch Error:\(error)")
                 return
             }
-            if let route = response?.routes[0] {
+            print(response?.routes.count)
+            self.mapView.removeOverlays(self.mapView.overlays)
+            for route in response!.routes {
                 let rect = self.mapView.mapRectThatFits(route.polyline.boundingMapRect, edgePadding: UIEdgeInsets(top: 100, left: 100, bottom: 100, right: 100))
                 self.mapView.setRegion(MKCoordinateRegion(rect), animated: true)
-                
-                self.mapView.removeOverlays(self.mapView.overlays)
                 self.mapView.addOverlay(route.polyline, level: .aboveRoads)
             }
         }

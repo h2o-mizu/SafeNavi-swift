@@ -19,7 +19,6 @@ struct MapView: UIViewRepresentable {
         
         let view = mapData.mapView
         view.showsUserLocation = true
-        
         view.mapType = .standard
         
         return view
