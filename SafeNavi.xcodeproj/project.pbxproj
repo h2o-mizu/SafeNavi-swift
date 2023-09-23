@@ -39,21 +39,21 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		00D02CDA2ABF61D900EDA6ED /* ConfirmDestinationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmDestinationView.swift; sourceTree = "<group>"; };
-		00D02CDE2ABF62C100EDA6ED /* NavigationModalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationModalView.swift; sourceTree = "<group>"; };
-		00D02CE02ABF78AD00EDA6ED /* SearchBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchBarView.swift; sourceTree = "<group>"; };
+		00D02CDA2ABF61D900EDA6ED /* ConfirmDestinationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ConfirmDestinationView.swift; path = SafeNavi/ConfirmDestinationView.swift; sourceTree = SOURCE_ROOT; };
+		00D02CDE2ABF62C100EDA6ED /* NavigationModalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = NavigationModalView.swift; path = SafeNavi/NavigationModalView.swift; sourceTree = SOURCE_ROOT; };
+		00D02CE02ABF78AD00EDA6ED /* SearchBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SearchBarView.swift; path = SafeNavi/SearchBarView.swift; sourceTree = SOURCE_ROOT; };
 		00F81A5A2ABC94B3009DABD4 /* SafeNavi.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SafeNavi.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		00F81A5D2ABC94B3009DABD4 /* SafeNaviApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SafeNaviApp.swift; sourceTree = "<group>"; };
-		00F81A5F2ABC94B3009DABD4 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		00F81A5D2ABC94B3009DABD4 /* SafeNaviApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SafeNaviApp.swift; path = SafeNavi/SafeNaviApp.swift; sourceTree = SOURCE_ROOT; };
+		00F81A5F2ABC94B3009DABD4 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ContentView.swift; path = SafeNavi/ContentView.swift; sourceTree = SOURCE_ROOT; };
 		00F81A612ABC94B3009DABD4 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		00F81A642ABC94B3009DABD4 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		00F81A6A2ABC94B3009DABD4 /* SafeNaviTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SafeNaviTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		00F81A6E2ABC94B3009DABD4 /* SafeNaviTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SafeNaviTests.swift; sourceTree = "<group>"; };
+		00F81A6E2ABC94B3009DABD4 /* SafeNaviTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SafeNaviTests.swift; path = SafeNaviTests/SafeNaviTests.swift; sourceTree = SOURCE_ROOT; };
 		00F81A742ABC94B3009DABD4 /* SafeNaviUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SafeNaviUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		00F81A782ABC94B3009DABD4 /* SafeNaviUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SafeNaviUITests.swift; sourceTree = "<group>"; };
-		00F81A7A2ABC94B3009DABD4 /* SafeNaviUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SafeNaviUITestsLaunchTests.swift; sourceTree = "<group>"; };
-		00F81A872ABC94D3009DABD4 /* MapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapView.swift; sourceTree = "<group>"; };
-		00F81A892ABCA797009DABD4 /* MapViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapViewModel.swift; sourceTree = "<group>"; };
+		00F81A782ABC94B3009DABD4 /* SafeNaviUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SafeNaviUITests.swift; path = SafeNaviUITests/SafeNaviUITests.swift; sourceTree = SOURCE_ROOT; };
+		00F81A7A2ABC94B3009DABD4 /* SafeNaviUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SafeNaviUITestsLaunchTests.swift; path = SafeNaviUITests/SafeNaviUITestsLaunchTests.swift; sourceTree = SOURCE_ROOT; };
+		00F81A872ABC94D3009DABD4 /* MapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = MapView.swift; path = SafeNavi/MapView.swift; sourceTree = SOURCE_ROOT; };
+		00F81A892ABCA797009DABD4 /* MapViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = MapViewModel.swift; path = SafeNavi/MapViewModel.swift; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -131,7 +131,7 @@
 				00F81A6E2ABC94B3009DABD4 /* SafeNaviTests.swift */,
 			);
 			path = SafeNaviTests;
-			sourceTree = "<group>";
+			sourceTree = SOURCE_ROOT;
 		};
 		00F81A772ABC94B3009DABD4 /* SafeNaviUITests */ = {
 			isa = PBXGroup;
@@ -140,7 +140,7 @@
 				00F81A7A2ABC94B3009DABD4 /* SafeNaviUITestsLaunchTests.swift */,
 			);
 			path = SafeNaviUITests;
-			sourceTree = "<group>";
+			sourceTree = SOURCE_ROOT;
 		};
 /* End PBXGroup section */
 
