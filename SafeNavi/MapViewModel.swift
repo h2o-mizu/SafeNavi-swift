@@ -17,6 +17,8 @@ class MapViewModel: NSObject, ObservableObject, CLLocationManagerDelegate, MKLoc
     @Published var searchText = ""
     @Published var searchResults: [MKLocalSearchCompletion] = []
     
+    private var wayPoints: [MKMapItem] = []
+    
     @Published var selectedPoint: MKPlacemark?
     @Published var endPoint: MKPlacemark?
     @Published var startPoint: MKPlacemark?
@@ -43,7 +45,6 @@ class MapViewModel: NSObject, ObservableObject, CLLocationManagerDelegate, MKLoc
         searchText = ""
         mapView.removeAnnotations(mapView.annotations)
         
-
         let request = MKLocalSearch.Request(completion: point)
         let search = MKLocalSearch(request: request)
         search.start { (response, error) in
@@ -70,32 +71,97 @@ class MapViewModel: NSObject, ObservableObject, CLLocationManagerDelegate, MKLoc
     }
     
     func decideDestination(destination: MKPlacemark) {
-        self.startPoint = MKPlacemark(coordinate: mapView.userLocation.coordinate)
-        self.endPoint = destination
+        wayPoints.removeAll()
+        
+        startPoint = MKPlacemark(coordinate: mapView.userLocation.coordinate)
+        endPoint = destination
         
         mapView.addAnnotation(self.startPoint!)
         mapView.addAnnotation(self.endPoint!)
         
-        let directionRequest = MKDirections.Request()
-        directionRequest.source = MKMapItem(placemark: self.startPoint!)
-        directionRequest.destination = MKMapItem(placemark: self.endPoint!)
-        directionRequest.transportType = MKDirectionsTransportType.walking
-        directionRequest.requestsAlternateRoutes = true
+        self.mapView.setRegion(regionThatFitsTwoPoints(point1: startPoint!, point2: endPoint!, zoom: 1.2), animated: true)
         
-        let directions = MKDirections(request: directionRequest)
-        directions.calculate { (response, error) in
+        wayPoints.append(MKMapItem(placemark: startPoint!))
+        
+        let requestWaypoints = MKLocalSearch.Request()
+        //TODO: もうちょっとquery工夫する
+        requestWaypoints.naturalLanguageQuery = "police"
+        requestWaypoints.region = regionThatFitsTwoPoints(point1: startPoint!, point2: endPoint!, zoom: 1.0)
+        
+        let searchIntersections = MKLocalSearch(request: requestWaypoints)
+        searchIntersections.start { response, error in
             if let error = error {
                 print("MKLocalSearch Error:\(error)")
                 return
             }
-            print(response?.routes.count)
+            var point1 = self.startPoint!
+            var point2 = self.endPoint!
+            if let mapItems = response?.mapItems {
+                for mapItem in mapItems {
+                    if(self.isMapItemWithinRegion(mapItem: mapItem, region: self.regionThatFitsTwoPoints(point1: point1, point2: point2, zoom: 1.0))){
+                        self.wayPoints.append(mapItem)
+                        let pointAnnotation = MKPointAnnotation()
+                        pointAnnotation.coordinate = mapItem.placemark.coordinate
+                        pointAnnotation.title = mapItem.placemark.name
+                        self.mapView.addAnnotation(pointAnnotation)
+                        
+                        point1 = mapItem.placemark
+                    }
+                }
+            }
+            self.wayPoints.append(MKMapItem(placemark: destination))
+            
             self.mapView.removeOverlays(self.mapView.overlays)
+            for num in 0..<(self.wayPoints.count - 1) {
+                self.drawDirections(start: self.wayPoints[num], end: self.wayPoints[num + 1])
+            }
+        }
+    }
+    
+    func drawDirections(start: MKMapItem, end: MKMapItem) {
+        let directionRequest = MKDirections.Request()
+        directionRequest.transportType = MKDirectionsTransportType.walking
+        directionRequest.source = start
+        directionRequest.destination = end
+        
+        let directions = MKDirections(request: directionRequest)
+        directions.calculate { (response, error) in
+            if let error = error {
+                print("MKLocalSearch Error: \(error)")
+                return
+            }
             for route in response!.routes {
-                let rect = self.mapView.mapRectThatFits(route.polyline.boundingMapRect, edgePadding: UIEdgeInsets(top: 100, left: 100, bottom: 100, right: 100))
-                self.mapView.setRegion(MKCoordinateRegion(rect), animated: true)
                 self.mapView.addOverlay(route.polyline, level: .aboveRoads)
             }
         }
+    }
+    
+    func regionThatFitsTwoPoints(point1: MKPlacemark, point2: MKPlacemark, zoom: Double) -> MKCoordinateRegion {
+        let minLat = min(point1.coordinate.latitude, point2.coordinate.latitude)
+        let maxLat = max(point1.coordinate.latitude, point2.coordinate.latitude)
+        let minLon = min(point1.coordinate.longitude, point2.coordinate.longitude)
+        let maxLon = max(point1.coordinate.longitude, point2.coordinate.longitude)
+
+        let center = CLLocationCoordinate2D(latitude: (minLat + maxLat) / 2, longitude: (minLon + maxLon) / 2)
+        let span = MKCoordinateSpan(latitudeDelta: (maxLat - minLat) * zoom, longitudeDelta: (maxLon - minLon) * zoom)
+        
+        return MKCoordinateRegion(center: center, span: span)
+    }
+    
+    func isMapItemWithinRegion(mapItem: MKMapItem, region: MKCoordinateRegion) -> Bool {
+        let itemCoordinate = mapItem.placemark.coordinate
+
+        let minLatitude = region.center.latitude - (region.span.latitudeDelta / 2.0)
+        let maxLatitude = region.center.latitude + (region.span.latitudeDelta / 2.0)
+        let minLongitude = region.center.longitude - (region.span.longitudeDelta / 2.0)
+        let maxLongitude = region.center.longitude + (region.span.longitudeDelta / 2.0)
+
+        if itemCoordinate.latitude >= minLatitude && itemCoordinate.latitude <= maxLatitude &&
+            itemCoordinate.longitude >= minLongitude && itemCoordinate.longitude <= maxLongitude {
+            return true
+        }
+
+        return false
     }
     
     func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
