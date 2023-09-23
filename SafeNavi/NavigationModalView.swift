@@ -1,5 +1,5 @@
 //
-//  NavigationModal.swift
+//  NavigationModalView.swift
 //  SafeNavi
 //
 //  Created by Arisa Okamura on 2023/09/23.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct NavigationModal: View {
+struct NavigationModalView: View {
     
     @EnvironmentObject var mapData: MapViewModel
     
