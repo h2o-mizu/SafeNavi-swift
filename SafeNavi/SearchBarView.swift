@@ -27,7 +27,7 @@ struct SearchBarView: View {
                     })
             }
             .padding(13)
-            .background(.white.opacity(0.9))
+            .background(.white)
             .cornerRadius(30)
             .foregroundColor(.primary)
             

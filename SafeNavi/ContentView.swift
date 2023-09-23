@@ -41,7 +41,9 @@ struct ContentView: View {
                 Spacer()
                 
                 VStack{
-                    Button(action: {mapData.focusToUser()}, label: {
+                    Button(action: {
+                        mapData.focusToUser(span: 200)
+                    }, label: {
                         Image(systemName: "location.fill")
                             .font(.title2)
                             .padding(15)

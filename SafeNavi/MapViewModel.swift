@@ -53,12 +53,11 @@ class MapViewModel: NSObject, ObservableObject, CLLocationManagerDelegate, MKLoc
         mapView.removeOverlays(mapView.overlays)
         mapView.removeAnnotations(mapView.annotations)
         
-        focusToUser()
+        focusToUser(span: 200)
     }
     
-    func focusToUser() {
-        let span = MKCoordinateSpan(latitudeDelta: 0.025, longitudeDelta: 0.025)
-        let region = MKCoordinateRegion(center: mapView.userLocation.coordinate, span: span)
+    func focusToUser(span: Double) {
+        let region = MKCoordinateRegion(center: mapView.userLocation.coordinate, latitudinalMeters: span, longitudinalMeters: span)
         self.mapView.setRegion(region, animated: true)
         self.mapView.setVisibleMapRect(self.mapView.visibleMapRect, animated: true)
     }
