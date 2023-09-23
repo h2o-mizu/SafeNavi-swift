@@ -63,7 +63,9 @@ struct NavigationModalView: View {
                     }
                     .padding(.vertical, 10)
                     
-//                    Text("推定所要時間: \(90)")
+                    //FIXME: もし時間あったら所要時間(or到着時刻)表示できると嬉しい〜
+//                    let duration: Duration = .seconds(mapData.expectedTotalTravelTime)
+//                    Text("推定所要時間: \(duration.formatted())")
 //                        .bold()
                 }
                 
