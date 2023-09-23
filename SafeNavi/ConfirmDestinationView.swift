@@ -1,5 +1,5 @@
 //
-//  ModalView.swift
+//  ConfirmDestinationView.swift
 //  SafeNavi
 //
 //  Created by Arisa Okamura on 2023/09/22.
@@ -8,12 +8,13 @@
 import SwiftUI
 import MapKit
 
-struct ModalView: View {
+struct ConfirmDestionationView: View {
     
     @EnvironmentObject var mapData: MapViewModel
     @Binding var selectedPoint: MKPlacemark?
     
-    @Binding var showSheet: Bool
+    @Binding var confirmDestination: Bool
+    @Binding var showNavigation: Bool
 
     var body: some View {
         VStack(spacing: 10){
@@ -40,7 +41,8 @@ struct ModalView: View {
             
             Button(action: {
                 mapData.decideDestination(destination: selectedPoint!)
-                showSheet = false
+                confirmDestination = false
+                showNavigation = true
             }, label: {
                 Text("目的地に設定する")
                     .fontWeight(.semibold)

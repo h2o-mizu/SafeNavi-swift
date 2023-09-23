@@ -13,7 +13,9 @@ struct ContentView: View {
     
     @StateObject var mapData = MapViewModel()
     @State var locationManager = CLLocationManager()
-    @State private var showSheet = false
+    
+    @State private var confirmDestination = false
+    @State private var showNavigation = true
     
     var body: some View {
         ZStack{
@@ -21,69 +23,76 @@ struct ContentView: View {
                 .environmentObject(mapData)
                 .ignoresSafeArea()
                 .statusBar(hidden: false)
-                .sheet(isPresented: $showSheet) {
-                    ModalView(selectedPoint: $mapData.selectedPoint, showSheet: $showSheet)
+                .sheet(isPresented: $confirmDestination) {
+                    ConfirmDestionationView(selectedPoint: $mapData.selectedPoint, confirmDestination: $confirmDestination, showNavigation: $showNavigation)
                         .environmentObject(mapData)
                 }
-            
+                .sheet(isPresented: $showNavigation) {
+                    NavigationModal(showNavigation: $showNavigation)
+                        .environmentObject(mapData)
+                }
+        
             VStack{
-                VStack(spacing: 0){
-                    HStack{
-                        Image(systemName: "magnifyingglass")
-                            .foregroundColor(.gray)
+                if(!showNavigation) {
+                    VStack(spacing: 0){
+                        HStack{
+                            Image(systemName: "magnifyingglass")
+                                .foregroundColor(.gray)
+                            
+                            TextField("行き先を検索", text: $mapData.searchText)
+                                .autocorrectionDisabled()
+                                .onChange(of: mapData.searchText, perform: { value in
+                                    self.mapData.searchAddress()
+                                })
+                        }
+                        .padding(12)
+                        .background(.white.opacity(0.9))
+                        .cornerRadius(8)
+                        .foregroundColor(.primary)
                         
-                        TextField("行き先を検索", text: $mapData.searchText)
-                            .autocorrectionDisabled()
-                            .onChange(of: mapData.searchText, perform: { value in
-                                self.mapData.searchAddress()
-                            })
-                    }
-                    .padding(12)
-                    .background(.white.opacity(0.9))
-                    .cornerRadius(8)
-                    .foregroundColor(.primary)
-                    
-                    if mapData.searchResults.count != 0 {
-                        ScrollView{
-                            VStack(spacing: 15){
-                                ForEach(mapData.searchResults, id: \.self){result in
-                                    HStack{
-                                        VStack(alignment: .leading) {
-                                            Text(result.title)
-                                            Text(result.subtitle)
-                                                .foregroundColor(Color.primary.opacity(0.5))
+                        if mapData.searchResults.count != 0 {
+                            ScrollView{
+                                VStack(spacing: 15){
+                                    ForEach(mapData.searchResults, id: \.self){result in
+                                        HStack{
+                                            VStack(alignment: .leading) {
+                                                Text(result.title)
+                                                Text(result.subtitle)
+                                                    .foregroundColor(Color.primary.opacity(0.5))
+                                            }
+                                            Spacer()
                                         }
-                                        Spacer()
+                                        .onTapGesture{
+                                            mapData.selectPoint(point: result)
+                                            confirmDestination = true
+                                        }
                                     }
-                                    .onTapGesture{
-                                        mapData.selectPoint(point: result)
-                                        showSheet = true
-                                    }
+                                    
+                                    Divider()
                                 }
-                                
-                                Divider()
+                                .padding(.horizontal, 20)
+                                .padding(.top)
+                                .background(.white)
                             }
-                            .padding(.horizontal, 20)
-                            .padding(.top)
-                            .background(.white)
                         }
                     }
+                    .padding()
                 }
-                .padding()
                 
                 Spacer()
                 
-                VStack{
-                    Button(action: {}, label: {
-                        Image(systemName: "map")
-                            .font(.title2)
-                            .padding(10)
-                            .background(Color.primary)
-                            .clipShape(Circle())
-                    })
-                }
-                .frame(maxWidth: .infinity, alignment: .trailing)
-                .padding()
+                //右下のボタン
+//                VStack{
+//                    Button(action: {}, label: {
+//                        Image(systemName: "map")
+//                            .font(.title2)
+//                            .padding(10)
+//                            .background(Color.primary)
+//                            .clipShape(Circle())
+//                    })
+//                }
+//                .frame(maxWidth: .infinity, alignment: .trailing)
+//                .padding()
             }
         }
         .onAppear(perform: {

@@ -17,17 +17,46 @@ class MapViewModel: NSObject, ObservableObject, CLLocationManagerDelegate, MKLoc
     @Published var searchText = ""
     @Published var searchResults: [MKLocalSearchCompletion] = []
     
-    private var wayPoints: [MKMapItem] = []
-    
     @Published var selectedPoint: MKPlacemark?
     @Published var endPoint: MKPlacemark?
     @Published var startPoint: MKPlacemark?
+    
+    private var wayPoints: [MKMapItem] = []
+    private var routeSegments: [MKRoute] = []
     
     override init(){
         super.init()
         
         completer.delegate = self
         mapView.delegate = self
+    }
+    
+    var userIsNearDestination: Bool {
+        if self.endPoint != nil {
+            let region = MKCoordinateRegion(center:  self.endPoint!.coordinate, latitudinalMeters: 50, longitudinalMeters: 50)
+            if(self.isMapItemWithinRegion(mapItem: MKMapItem(placemark: MKPlacemark(coordinate: mapView.userLocation.coordinate)), region: region)) {
+                return true
+            }
+            return false
+        }
+        return false
+    }
+    
+    func reset() {
+        selectedPoint = nil
+        startPoint = nil
+        endPoint = nil
+        
+        wayPoints.removeAll()
+        routeSegments.removeAll()
+        
+        mapView.removeOverlays(mapView.overlays)
+        mapView.removeAnnotations(mapView.annotations)
+        
+        let span = MKCoordinateSpan(latitudeDelta: 0.025, longitudeDelta: 0.025)
+        let region = MKCoordinateRegion(center: mapView.userLocation.coordinate, span: span)
+        self.mapView.setRegion(region, animated: true)
+        self.mapView.setVisibleMapRect(self.mapView.visibleMapRect, animated: true)
     }
     
     func searchAddress() {
@@ -79,13 +108,12 @@ class MapViewModel: NSObject, ObservableObject, CLLocationManagerDelegate, MKLoc
         mapView.addAnnotation(self.startPoint!)
         mapView.addAnnotation(self.endPoint!)
         
-        self.mapView.setRegion(regionThatFitsTwoPoints(point1: startPoint!, point2: endPoint!, zoom: 1.2), animated: true)
+        self.mapView.setRegion(regionThatFitsTwoPoints(point1: startPoint!, point2: endPoint!, zoom: 1.3), animated: true)
         
         wayPoints.append(MKMapItem(placemark: startPoint!))
         
         let requestWaypoints = MKLocalSearch.Request()
-        //TODO: もうちょっとquery工夫する
-        requestWaypoints.naturalLanguageQuery = "police"
+        requestWaypoints.naturalLanguageQuery = "police station"
         requestWaypoints.region = regionThatFitsTwoPoints(point1: startPoint!, point2: endPoint!, zoom: 1.0)
         
         let searchIntersections = MKLocalSearch(request: requestWaypoints)
@@ -95,10 +123,9 @@ class MapViewModel: NSObject, ObservableObject, CLLocationManagerDelegate, MKLoc
                 return
             }
             var point1 = self.startPoint!
-            var point2 = self.endPoint!
             if let mapItems = response?.mapItems {
                 for mapItem in mapItems {
-                    if(self.isMapItemWithinRegion(mapItem: mapItem, region: self.regionThatFitsTwoPoints(point1: point1, point2: point2, zoom: 1.0))){
+                    if(self.isMapItemWithinRegion(mapItem: mapItem, region: self.regionThatFitsTwoPoints(point1: point1, point2: self.endPoint!, zoom: 1.0))){
                         self.wayPoints.append(mapItem)
                         let pointAnnotation = MKPointAnnotation()
                         pointAnnotation.coordinate = mapItem.placemark.coordinate
@@ -131,6 +158,7 @@ class MapViewModel: NSObject, ObservableObject, CLLocationManagerDelegate, MKLoc
                 return
             }
             for route in response!.routes {
+                self.routeSegments.append(route)
                 self.mapView.addOverlay(route.polyline, level: .aboveRoads)
             }
         }
@@ -160,7 +188,6 @@ class MapViewModel: NSObject, ObservableObject, CLLocationManagerDelegate, MKLoc
             itemCoordinate.longitude >= minLongitude && itemCoordinate.longitude <= maxLongitude {
             return true
         }
-
         return false
     }
     
@@ -168,6 +195,7 @@ class MapViewModel: NSObject, ObservableObject, CLLocationManagerDelegate, MKLoc
         let renderer = MKPolylineRenderer(overlay: overlay)
         renderer.strokeColor = UIColor.orange
         renderer.lineWidth = 9
+        renderer.lineJoin = .round
         return renderer
     }
     
