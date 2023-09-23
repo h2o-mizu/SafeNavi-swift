@@ -13,7 +13,9 @@ struct ContentView: View {
     
     @StateObject var mapData = MapViewModel()
     @State var locationManager = CLLocationManager()
-    @State private var showSheet = false
+    
+    @State private var confirmDestination = false
+    @State private var showNavigation = false
     
     var body: some View {
         ZStack{
@@ -21,65 +23,33 @@ struct ContentView: View {
                 .environmentObject(mapData)
                 .ignoresSafeArea()
                 .statusBar(hidden: false)
-                .sheet(isPresented: $showSheet) {
-                    ModalView(selectedPoint: $mapData.selectedPoint, showSheet: $showSheet)
+                .sheet(isPresented: $confirmDestination) {
+                    ConfirmDestionationView(selectedPoint: $mapData.selectedPoint, confirmDestination: $confirmDestination, showNavigation: $showNavigation)
                         .environmentObject(mapData)
                 }
-            
-            VStack{
-                VStack(spacing: 0){
-                    HStack{
-                        Image(systemName: "magnifyingglass")
-                            .foregroundColor(.gray)
-                        
-                        TextField("行き先を検索", text: $mapData.searchText)
-                            .autocorrectionDisabled()
-                            .onChange(of: mapData.searchText, perform: { value in
-                                self.mapData.searchAddress()
-                            })
-                    }
-                    .padding(12)
-                    .background(.white.opacity(0.9))
-                    .cornerRadius(8)
-                    .foregroundColor(.primary)
-                    
-                    if mapData.searchResults.count != 0 {
-                        ScrollView{
-                            VStack(spacing: 15){
-                                ForEach(mapData.searchResults, id: \.self){result in
-                                    HStack{
-                                        VStack(alignment: .leading) {
-                                            Text(result.title)
-                                            Text(result.subtitle)
-                                                .foregroundColor(Color.primary.opacity(0.5))
-                                        }
-                                        Spacer()
-                                    }
-                                    .onTapGesture{
-                                        mapData.selectPoint(point: result)
-                                        showSheet = true
-                                    }
-                                }
-                                
-                                Divider()
-                            }
-                            .padding(.horizontal, 20)
-                            .padding(.top)
-                            .background(.white)
-                        }
-                    }
+                .sheet(isPresented: $showNavigation) {
+                    NavigationModalView(showNavigation: $showNavigation)
+                        .environmentObject(mapData)
                 }
-                .padding()
+        
+            VStack{
+                if(!showNavigation) {
+                    SearchBarView(showNavigation: $showNavigation, confirmDestination: $confirmDestination)
+                        .environmentObject(mapData)
+                }
                 
                 Spacer()
                 
                 VStack{
-                    Button(action: {}, label: {
-                        Image(systemName: "map")
+                    Button(action: {
+                        mapData.focusToUser(span: 200)
+                    }, label: {
+                        Image(systemName: "location.fill")
                             .font(.title2)
-                            .padding(10)
-                            .background(Color.primary)
+                            .padding(15)
+                            .background(.white)
                             .clipShape(Circle())
+                            .shadow(radius: 7)
                     })
                 }
                 .frame(maxWidth: .infinity, alignment: .trailing)
