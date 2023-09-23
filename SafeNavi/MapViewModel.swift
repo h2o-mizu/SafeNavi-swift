@@ -31,6 +31,16 @@ class MapViewModel: NSObject, ObservableObject, CLLocationManagerDelegate, MKLoc
         mapView.delegate = self
     }
     
+    //FIXME: asyncのroute追加処理が終わるまで待たないとだめ
+//    var expectedTotalTravelTime: TimeInterval {
+//        var time: TimeInterval = 0.0;
+//        for route in routeSegments {
+//            time += route.expect
+    edTravelTime
+//        }
+//        return time
+//    }
+    
     var userIsNearDestination: Bool {
         if self.endPoint != nil {
             let region = MKCoordinateRegion(center:  self.endPoint!.coordinate, latitudinalMeters: 50, longitudinalMeters: 50)

@@ -15,22 +15,7 @@ struct SearchBarView: View {
     @Binding var confirmDestination: Bool
     
     var body: some View {
-        VStack(spacing: 0){
-            HStack{
-                Image(systemName: "magnifyingglass")
-                    .foregroundColor(.gray)
-                
-                TextField("行き先を検索", text: $mapData.searchText)
-                    .autocorrectionDisabled()
-                    .onChange(of: mapData.searchText, perform: { value in
-                        self.mapData.searchAddress()
-                    })
-            }
-            .padding(13)
-            .background(.white)
-            .cornerRadius(30)
-            .foregroundColor(.primary)
-            
+        ZStack(alignment: .top){
             if mapData.searchResults.count != 0 {
                 ScrollView{
                     VStack(spacing: 15){
@@ -52,12 +37,32 @@ struct SearchBarView: View {
                         Divider()
                     }
                     .padding(.horizontal, 20)
-                    .padding(.top)
+                    .padding(.top, 50)
                     .background(.white)
+                    .cornerRadius(15)
                 }
+                .padding(.top, 9)
+                .cornerRadius(15)
+                .shadow(radius: 5)
             }
+            
+            
+            HStack{
+                Image(systemName: "magnifyingglass")
+                    .foregroundColor(.gray)
+                
+                TextField("行き先を検索", text: $mapData.searchText)
+                    .autocorrectionDisabled()
+                    .onChange(of: mapData.searchText, perform: { value in
+                        self.mapData.searchAddress()
+                    })
+            }
+            .padding(13)
+            .background(.white)
+            .cornerRadius(30)
+            .foregroundColor(.primary)
         }
         .padding()
-        .shadow(radius: 10)
+        .shadow(radius: 5)
     }
 }

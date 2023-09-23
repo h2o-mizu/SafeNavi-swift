@@ -66,8 +66,8 @@ struct ConfirmDestionationView: View {
         .padding()
         .interactiveDismissDisabled()
         .scrollDisabled(true)
-        .presentationDetents([.height(200), .large])
+        .presentationDetents([.height(200)])
         .presentationBackground(.regularMaterial)
-        .presentationBackgroundInteraction(.enabled(upThrough: .large))
+        .presentationBackgroundInteraction(.enabled(upThrough: .height(200)))
     }
 }
