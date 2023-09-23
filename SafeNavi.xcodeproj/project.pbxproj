@@ -14,6 +14,9 @@
 		00F81A6F2ABC94B3009DABD4 /* SafeNaviTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00F81A6E2ABC94B3009DABD4 /* SafeNaviTests.swift */; };
 		00F81A792ABC94B3009DABD4 /* SafeNaviUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00F81A782ABC94B3009DABD4 /* SafeNaviUITests.swift */; };
 		00F81A7B2ABC94B3009DABD4 /* SafeNaviUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00F81A7A2ABC94B3009DABD4 /* SafeNaviUITestsLaunchTests.swift */; };
+		00F81A882ABC94D3009DABD4 /* MapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00F81A872ABC94D3009DABD4 /* MapView.swift */; };
+		00F81A8A2ABCA797009DABD4 /* MapViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00F81A892ABCA797009DABD4 /* MapViewModel.swift */; };
+		00F81A932ABE2CA0009DABD4 /* ModalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00F81A922ABE2CA0009DABD4 /* ModalView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -44,6 +47,9 @@
 		00F81A742ABC94B3009DABD4 /* SafeNaviUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SafeNaviUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		00F81A782ABC94B3009DABD4 /* SafeNaviUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SafeNaviUITests.swift; sourceTree = "<group>"; };
 		00F81A7A2ABC94B3009DABD4 /* SafeNaviUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SafeNaviUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		00F81A872ABC94D3009DABD4 /* MapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapView.swift; sourceTree = "<group>"; };
+		00F81A892ABCA797009DABD4 /* MapViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapViewModel.swift; sourceTree = "<group>"; };
+		00F81A922ABE2CA0009DABD4 /* ModalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModalView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -98,6 +104,9 @@
 				00F81A5F2ABC94B3009DABD4 /* ContentView.swift */,
 				00F81A612ABC94B3009DABD4 /* Assets.xcassets */,
 				00F81A632ABC94B3009DABD4 /* Preview Content */,
+				00F81A872ABC94D3009DABD4 /* MapView.swift */,
+				00F81A892ABCA797009DABD4 /* MapViewModel.swift */,
+				00F81A922ABE2CA0009DABD4 /* ModalView.swift */,
 			);
 			path = SafeNavi;
 			sourceTree = "<group>";
@@ -143,6 +152,8 @@
 			dependencies = (
 			);
 			name = SafeNavi;
+			packageProductDependencies = (
+			);
 			productName = SafeNavi;
 			productReference = 00F81A5A2ABC94B3009DABD4 /* SafeNavi.app */;
 			productType = "com.apple.product-type.application";
@@ -215,6 +226,8 @@
 				Base,
 			);
 			mainGroup = 00F81A512ABC94B3009DABD4;
+			packageReferences = (
+			);
 			productRefGroup = 00F81A5B2ABC94B3009DABD4 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -257,8 +270,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				00F81A932ABE2CA0009DABD4 /* ModalView.swift in Sources */,
 				00F81A602ABC94B3009DABD4 /* ContentView.swift in Sources */,
+				00F81A882ABC94D3009DABD4 /* MapView.swift in Sources */,
 				00F81A5E2ABC94B3009DABD4 /* SafeNaviApp.swift in Sources */,
+				00F81A8A2ABCA797009DABD4 /* MapViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -420,6 +436,7 @@
 				DEVELOPMENT_TEAM = 3HL5J5ZT53;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "現在地を取得するのに使用します";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -449,6 +466,7 @@
 				DEVELOPMENT_TEAM = 3HL5J5ZT53;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "現在地を取得するのに使用します";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
