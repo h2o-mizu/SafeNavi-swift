@@ -9,7 +9,7 @@ import SwiftUI
 import MapKit
 import CoreLocation
 
-class MapViewModel: NSObject, ObservableObject, CLLocationManagerDelegate, MKLocalSearchCompleterDelegate {
+class MapViewModel: NSObject, ObservableObject, CLLocationManagerDelegate, MKLocalSearchCompleterDelegate, MKMapViewDelegate {
     @Published var mapView = MKMapView()
     @Published var permissionDenied = false
     
@@ -17,19 +17,18 @@ class MapViewModel: NSObject, ObservableObject, CLLocationManagerDelegate, MKLoc
     @Published var searchText = ""
     @Published var searchResults: [MKLocalSearchCompletion] = []
     
-    @Published var selectedPoint: CLPlacemark?
-    @Published var endPoint: CLPlacemark?
-    @Published var startPoint: CLPlacemark?
+    @Published var selectedPoint: MKPlacemark?
+    @Published var endPoint: MKPlacemark?
+    @Published var startPoint: MKPlacemark?
     
     override init(){
-            super.init()
-            
-            completer.delegate = self
-//            completer.resultTypes = .pointOfInterest
-        }
+        super.init()
+        
+        completer.delegate = self
+        mapView.delegate = self
+    }
     
     func searchAddress() {
-        
         if !searchText.isEmpty {
             if completer.queryFragment != searchText {
                 completer.queryFragment = searchText
@@ -70,9 +69,40 @@ class MapViewModel: NSObject, ObservableObject, CLLocationManagerDelegate, MKLoc
         }
     }
     
-    func decideDestination(destination: CLPlacemark) {
+    func decideDestination(destination: MKPlacemark) {
+        self.startPoint = MKPlacemark(coordinate: mapView.userLocation.coordinate)
         self.endPoint = destination
         
+        mapView.addAnnotation(self.startPoint!)
+        mapView.addAnnotation(self.endPoint!)
+        
+        let directionRequest = MKDirections.Request()
+        directionRequest.source = MKMapItem(placemark: self.startPoint!)
+        directionRequest.destination = MKMapItem(placemark: self.endPoint!)
+        directionRequest.transportType = MKDirectionsTransportType.walking
+        directionRequest.requestsAlternateRoutes = false
+        
+        let directions = MKDirections(request: directionRequest)
+        directions.calculate { (response, error) in
+            if let error = error {
+                print("MKLocalSearch Error:\(error)")
+                return
+            }
+            if let route = response?.routes[0] {
+                let rect = self.mapView.mapRectThatFits(route.polyline.boundingMapRect, edgePadding: UIEdgeInsets(top: 100, left: 100, bottom: 100, right: 100))
+                self.mapView.setRegion(MKCoordinateRegion(rect), animated: true)
+                
+                self.mapView.removeOverlays(self.mapView.overlays)
+                self.mapView.addOverlay(route.polyline, level: .aboveRoads)
+            }
+        }
+    }
+    
+    func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
+        let renderer = MKPolylineRenderer(overlay: overlay)
+        renderer.strokeColor = UIColor.orange
+        renderer.lineWidth = 9
+        return renderer
     }
     
     func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
@@ -89,10 +119,8 @@ class MapViewModel: NSObject, ObservableObject, CLLocationManagerDelegate, MKLoc
     }
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        
         guard let location = locations.last else{return}
         
-    
         let span = MKCoordinateSpan(latitudeDelta: 0.025, longitudeDelta: 0.025)
         let region = MKCoordinateRegion(center: location.coordinate, span: span)
         self.mapView.setRegion(region, animated: true)
@@ -104,12 +132,12 @@ class MapViewModel: NSObject, ObservableObject, CLLocationManagerDelegate, MKLoc
     }
     
     func completerDidUpdateResults(_ completer: MKLocalSearchCompleter) {
-            DispatchQueue.main.async {
-                if !self.searchText.isEmpty {
-                    self.searchResults = completer.results
-                } else {
-                    self.searchResults = .init()
-                }
+        DispatchQueue.main.async {
+            if !self.searchText.isEmpty {
+                self.searchResults = completer.results
+            } else {
+                self.searchResults = .init()
             }
         }
+    }
 }

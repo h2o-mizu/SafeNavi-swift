@@ -18,8 +18,6 @@ struct MapView: UIViewRepresentable {
     func makeUIView(context: Context) -> MKMapView {
         
         let view = mapData.mapView
-        
-        view.delegate = context.coordinator
         view.showsUserLocation = true
         
         view.mapType = .standard
@@ -28,12 +26,5 @@ struct MapView: UIViewRepresentable {
     }
 
     func updateUIView(_ uiView: MKMapView, context: UIViewRepresentableContext<MapView>) {
-    }
-    
-    func makeCoordinator() -> MapView.Coordinator {
-        return MapView.Coordinator()
-    }
-    
-    class Coordinator: NSObject, MKMapViewDelegate {
     }
 }

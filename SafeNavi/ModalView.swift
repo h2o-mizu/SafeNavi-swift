@@ -11,7 +11,9 @@ import MapKit
 struct ModalView: View {
     
     @EnvironmentObject var mapData: MapViewModel
-    @Binding var selectedPoint: CLPlacemark?
+    @Binding var selectedPoint: MKPlacemark?
+    
+    @Binding var showSheet: Bool
 
     var body: some View {
         VStack(spacing: 10){
@@ -38,6 +40,7 @@ struct ModalView: View {
             
             Button(action: {
                 mapData.decideDestination(destination: selectedPoint!)
+                showSheet = false
             }, label: {
                 Text("目的地に設定する")
                     .fontWeight(.semibold)

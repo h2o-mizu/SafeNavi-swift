@@ -22,7 +22,7 @@ struct ContentView: View {
                 .ignoresSafeArea()
                 .statusBar(hidden: false)
                 .sheet(isPresented: $showSheet) {
-                    ModalView(selectedPoint: $mapData.selectedPoint)
+                    ModalView(selectedPoint: $mapData.selectedPoint, showSheet: $showSheet)
                         .environmentObject(mapData)
                 }
             
