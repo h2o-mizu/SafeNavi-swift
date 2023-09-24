@@ -35,8 +35,7 @@ class MapViewModel: NSObject, ObservableObject, CLLocationManagerDelegate, MKLoc
 //    var expectedTotalTravelTime: TimeInterval {
 //        var time: TimeInterval = 0.0;
 //        for route in routeSegments {
-//            time += route.expect
-    edTravelTime
+//            time += route.expectedTravelTime
 //        }
 //        return time
 //    }
