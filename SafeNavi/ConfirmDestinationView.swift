@@ -18,17 +18,17 @@ struct ConfirmDestionationView: View {
 
     var body: some View {
         VStack(spacing: 10){
-            Text(selectedPoint?.name ?? "選択された地点")
-                .font(.title2.bold())
+            Text(selectedPoint?.name ?? "えらばれた ちてん")
+                .font(.headline.bold())
                 .padding(.top)
             
             HStack(spacing: 10) {
                 Image(systemName: "mappin.circle.fill")
-                    .font(.title2)
+                    .font(.headline)
                     .foregroundColor(.gray)
                 
                 VStack(alignment: .leading, spacing: 6) {
-                    Text(selectedPoint?.subLocality ?? "追加情報なし")
+                    Text(selectedPoint?.subLocality ?? "ついか じょうほう なし")
                         .font(.title3.bold())
                     
                     Text(selectedPoint?.locality ?? "")
@@ -38,28 +38,18 @@ struct ConfirmDestionationView: View {
             }
             .frame(maxWidth: .infinity, alignment: .leading)
             .padding(.all, 10)
-            
-            Button(action: {
+
+            Button {
                 mapData.decideDestination(destination: selectedPoint!)
                 confirmDestination = false
                 showNavigation = true
-            }, label: {
-                Text("目的地に設定する")
+            } label: {
+                Text("もくてきち に せってい")
+                    .font(.headline)
                     .fontWeight(.semibold)
-                    .foregroundColor(.white)
-                    .frame(maxWidth: .infinity)
-                    .padding(.vertical, 12)
-                    .background{
-                        RoundedRectangle(cornerRadius: 10, style: .continuous)
-                            .fill(.blue)
-                    }
-                    .overlay(alignment: .trailing, content: {
-                        Image(systemName: "arrow.right")
-                            .font(.title3.bold())
-                            .padding(.trailing)
-                            .foregroundColor(.white)
-                    })
-            })
+                    .foregroundColor(Color("whiteText"))
+            }
+            .buttonStyle(CustomButtonStyle(backgroundColor: Color("navy"), strokeColor: Color.clear))
             
             Spacer()
         }

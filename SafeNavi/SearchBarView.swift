@@ -51,7 +51,7 @@ struct SearchBarView: View {
                 Image(systemName: "magnifyingglass")
                     .foregroundColor(.gray)
                 
-                TextField("行き先を検索", text: $mapData.searchText)
+                TextField("いく ばしょを さがす", text: $mapData.searchText)
                     .autocorrectionDisabled()
                     .onChange(of: mapData.searchText, perform: { value in
                         self.mapData.searchAddress()

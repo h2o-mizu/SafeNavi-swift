@@ -24,15 +24,15 @@ struct NavigationModalView: View {
                 
                 VStack(alignment: .leading){
                     VStack(alignment: .leading, spacing: 5) {
-                        Text("出発地点: ")
+                        Text("しゅっぱつする ちてん: ")
                             .bold()
                         
                         HStack(alignment: .center, spacing: 10) {
                             Image(systemName: "mappin.circle.fill")
-                                .font(.title2)
+                                .font(.headline)
                                 .foregroundColor(.gray)
                             
-                            Text(mapData.startPoint?.name ?? "現在地点")
+                            Text(mapData.startPoint?.name ?? "いまいる ちてん")
                                 .font(.title3)
                         }
                         .frame(maxWidth: .infinity, alignment: .leading)
@@ -41,16 +41,16 @@ struct NavigationModalView: View {
                     .padding(.vertical, 10)
                     
                     VStack(alignment: .leading, spacing: 5) {
-                        Text("目的地点: ")
+                        Text("いきたい ちてん: ")
                             .bold()
                         
                         HStack(spacing: 10) {
                             Image(systemName: "mappin.circle.fill")
-                                .font(.title2)
+                                .font(.headline)
                                 .foregroundColor(.gray)
                             
                             VStack(alignment: .leading, spacing: 3) {
-                                Text(mapData.endPoint?.name ?? "選択された地点")
+                                Text(mapData.endPoint?.name ?? "えらばれた ばしょ")
                                     .font(.title3)
                                 
                                 Text(mapData.endPoint?.subLocality ?? "")
@@ -64,28 +64,21 @@ struct NavigationModalView: View {
                     .padding(.vertical, 10)
                     
                     //FIXME: もし時間あったら所要時間(or到着時刻)表示できると嬉しい〜
-//                    let duration: Duration = .seconds(mapData.expectedTotalTravelTime)
-//                    Text("推定所要時間: \(duration.formatted())")
-//                        .bold()
+                    //                    let duration: Duration = .seconds(mapData.expectedTotalTravelTime)
+                    //                    Text("推定所要時間: \(duration.formatted())")
+                    //                        .bold()
                 }
-                
-                Button(action: {
+
+                Button {
                     status = .navigating
                     mapData.focusToUser(span: 50)
-                }, label: {
-                    Text("案内を開始する")
-                        .font(.title2)
+                } label: {
+                    Text("あんないを はじめる")
+                        .font(.headline)
                         .fontWeight(.semibold)
-                        .foregroundColor(.white)
-                        .frame(maxWidth: .infinity)
-                        .padding(.vertical, 12)
-                        .background{
-                            RoundedRectangle(cornerRadius: 10, style: .continuous)
-                                .fill(.blue)
-                        }
-                })
-                .padding(.horizontal, 20)
-                .padding(.top, 20)
+                        .foregroundColor(Color("whiteText"))
+                }
+                .buttonStyle(CustomButtonStyle(backgroundColor: Color("redButton"), strokeColor: Color.clear))
             }
             .padding()
             .interactiveDismissDisabled()
@@ -96,38 +89,25 @@ struct NavigationModalView: View {
         } else {
             VStack{
                 Spacer()
-                
-                Button(action: {
+
+                Button {
                     status = .confirming
                     showNavigation = false
                     mapData.reset()
-                }, label: {
+                } label: {
                     if(status == .nearDestination) {
-                        Text("案内を終了する")
-                            .font(.title2)
+                        Text("あんない を おわる")
+                            .font(.headline)
                             .fontWeight(.semibold)
-                            .foregroundColor(.white)
-                            .frame(maxWidth: .infinity)
-                            .padding(.vertical, 12)
-                            .background{
-                                RoundedRectangle(cornerRadius: 10, style: .continuous)
-                                    .fill(.blue)
-                            }
+                            .foregroundColor(Color("whiteText"))
                     } else {
-                        Text("案内を中断する")
-                            .font(.title2)
+                        Text("あんない を ちゅうだん")
+                            .font(.headline)
                             .fontWeight(.semibold)
-                            .foregroundColor(.gray)
-                            .frame(maxWidth: .infinity)
-                            .padding(.vertical, 12)
-                            .background{
-                                RoundedRectangle(cornerRadius: 10, style: .continuous)
-                                    .fill(.white)
-                            }
+                            .foregroundColor(Color("whiteText"))
                     }
-                })
-                .padding(.horizontal, 20)
-                .padding(.top, 20)
+                }
+                .buttonStyle(CustomButtonStyle(backgroundColor: Color("redButton"), strokeColor: Color.clear))
             }
             .padding()
             .interactiveDismissDisabled()

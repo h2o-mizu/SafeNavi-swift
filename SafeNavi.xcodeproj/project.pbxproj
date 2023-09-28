@@ -19,6 +19,7 @@
 		00F81A7B2ABC94B3009DABD4 /* SafeNaviUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00F81A7A2ABC94B3009DABD4 /* SafeNaviUITestsLaunchTests.swift */; };
 		00F81A882ABC94D3009DABD4 /* MapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00F81A872ABC94D3009DABD4 /* MapView.swift */; };
 		00F81A8A2ABCA797009DABD4 /* MapViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00F81A892ABCA797009DABD4 /* MapViewModel.swift */; };
+		035FB7472AC5D5B20040F98E /* Colors.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 035FB7462AC5D5B20040F98E /* Colors.xcassets */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -54,6 +55,7 @@
 		00F81A7A2ABC94B3009DABD4 /* SafeNaviUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SafeNaviUITestsLaunchTests.swift; path = SafeNaviUITests/SafeNaviUITestsLaunchTests.swift; sourceTree = SOURCE_ROOT; };
 		00F81A872ABC94D3009DABD4 /* MapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = MapView.swift; path = SafeNavi/MapView.swift; sourceTree = SOURCE_ROOT; };
 		00F81A892ABCA797009DABD4 /* MapViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = MapViewModel.swift; path = SafeNavi/MapViewModel.swift; sourceTree = SOURCE_ROOT; };
+		035FB7462AC5D5B20040F98E /* Colors.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Colors.xcassets; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -84,6 +86,8 @@
 		00F81A512ABC94B3009DABD4 = {
 			isa = PBXGroup;
 			children = (
+				035FB7462AC5D5B20040F98E /* Colors.xcassets */,
+				00F81A612ABC94B3009DABD4 /* Assets.xcassets */,
 				00F81A5C2ABC94B3009DABD4 /* SafeNavi */,
 				00F81A6D2ABC94B3009DABD4 /* SafeNaviTests */,
 				00F81A772ABC94B3009DABD4 /* SafeNaviUITests */,
@@ -106,7 +110,6 @@
 			children = (
 				00F81A5D2ABC94B3009DABD4 /* SafeNaviApp.swift */,
 				00F81A5F2ABC94B3009DABD4 /* ContentView.swift */,
-				00F81A612ABC94B3009DABD4 /* Assets.xcassets */,
 				00F81A632ABC94B3009DABD4 /* Preview Content */,
 				00F81A872ABC94D3009DABD4 /* MapView.swift */,
 				00F81A892ABCA797009DABD4 /* MapViewModel.swift */,
@@ -250,6 +253,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				035FB7472AC5D5B20040F98E /* Colors.xcassets in Resources */,
 				00F81A652ABC94B3009DABD4 /* Preview Assets.xcassets in Resources */,
 				00F81A622ABC94B3009DABD4 /* Assets.xcassets in Resources */,
 			);
