@@ -205,7 +205,7 @@ class MapViewModel: NSObject, ObservableObject, CLLocationManagerDelegate, MKLoc
     
     func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
         let renderer = MKPolylineRenderer(overlay: overlay)
-        renderer.strokeColor = UIColor.orange
+        renderer.strokeColor = UIColor(named: "navy")
         renderer.lineWidth = 9
         renderer.lineJoin = .round
         return renderer
