@@ -33,7 +33,7 @@ struct ContentView: View {
                 }
 
             VStack {
-                if(!showNavigation) {
+                if(!showNavigation && !confirmDestination) {
                     SearchBarView(showNavigation: $showNavigation, confirmDestination: $confirmDestination)
                         .environmentObject(mapData)
                 }
